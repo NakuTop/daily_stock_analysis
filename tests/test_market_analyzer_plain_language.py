@@ -48,13 +48,13 @@ def _make_us_overview() -> MarketOverview:
         indices=[
             MarketIndex(
                 code="SPX",
-                name="æ æ®500ææ°",
+                name="标普500指数",
                 current=7499.36,
                 change_pct=0.79,
             ),
             MarketIndex(
                 code="IXIC",
-                name="çº³æ¯è¾¾åç»¼åææ°",
+                name="纳斯达克综合指数",
                 current=26213.72,
                 change_pct=1.52,
             ),
@@ -67,9 +67,9 @@ def test_us_market_prompt_explains_sector_limitation_without_error_wording() -> 
 
     prompt = analyzer._build_review_prompt(_make_us_overview(), [])
 
-    assert "ç¾è¡æ¿åæè¡ææªæ¥å¥" in prompt
-    assert "ä¸æ¯æ°æ®éè¯¯" in prompt
-    assert "ææ æ¿åæ¶¨è·æ°æ®" not in prompt
+    assert "美股板块排行暂未接入" in prompt
+    assert "不是数据错误" in prompt
+    assert "暂无板块涨跌数据" not in prompt
 
 
 def test_zh_market_prompt_requests_plain_language_daily_brief() -> None:
@@ -77,11 +77,11 @@ def test_zh_market_prompt_requests_plain_language_daily_brief() -> None:
 
     prompt = analyzer._build_review_prompt(_make_us_overview(), [])
 
-    assert "æ¯æ¥ç®æ¥" in prompt
-    assert "å°ç¨ä¸ä¸æ¯è¯­" in prompt
-    assert "åè¯´ç»è®º" in prompt
-    assert "æå¤©éç¹çä»ä¹" in prompt
-    assert "äº¤æåçåå·¥ä½å°" not in prompt
+    assert "每日简报" in prompt
+    assert "少用专业术语" in prompt
+    assert "先说结论" in prompt
+    assert "明天重点看什么" in prompt
+    assert "交易员盘后工作台" not in prompt
 
 
 def test_us_template_review_uses_plain_sector_limitation_copy() -> None:
@@ -89,6 +89,6 @@ def test_us_template_review_uses_plain_sector_limitation_copy() -> None:
 
     report = analyzer._generate_template_review(_make_us_overview(), [])
 
-    assert "ç¾è¡æ¿åæè¡ææªæ¥å¥" in report
-    assert "ä¸æ¯æ°æ®éè¯¯" in report
-    assert "ææ æ¿åæ¶¨è·æ¦æ°æ®" not in report
+    assert "美股板块排行暂未接入" in report
+    assert "不是数据错误" in report
+    assert "暂无板块涨跌榜数据" not in report
